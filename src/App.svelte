@@ -2,11 +2,14 @@
   import { onMount } from 'svelte';
   import { memories } from './memories/state.svelte';
   import { memoryOfDay } from './memories/memories';
-  import { paletteFrom, type Palette } from './palette';
+  import { paletteFrom, glassFrom, tintTextFrom, dangerTextFrom, type Palette, type Glass } from './palette';
   import { onPrefsChange } from './prefs-live';
 
   let view = $state<'modal' | 'widget'>('modal');
   let palette = $state<Palette>(paletteFrom(undefined));
+  let glass = $state<Glass>(glassFrom(undefined));
+  let tintText = $state(tintTextFrom(undefined));
+  let dangerText = $state(dangerTextFrom(undefined));
   let scale = $state(1);
 
   const today = $derived(memoryOfDay(memories.memories, new Date()));
@@ -14,6 +17,9 @@
   const applyNomieValues = (plugin: any) => {
     if (!plugin?.prefs) return;
     palette = paletteFrom(plugin.prefs);
+    glass = glassFrom(plugin.prefs);
+    tintText = tintTextFrom(plugin.prefs);
+    dangerText = dangerTextFrom(plugin.prefs);
     scale = plugin.prefs.fontScale || 1;
   };
 
@@ -46,7 +52,7 @@
   });
 </script>
 
-<div class="root" class:widget={view === 'widget'} style="--page: {palette.page}; --card: {palette.card}; --card-inner: {palette.cardInner}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --danger: {palette.danger}; --scale: {scale};">
+<div class="root" class:widget={view === 'widget'} style="--page: {palette.page}; --card: {palette.card}; --card-inner: {palette.cardInner}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --danger: {dangerText}; --tint-text: {tintText}; --glass-fill: {glass.fill}; --glass-edge: {glass.edge}; --glass-blur: {glass.blur}; --glass-shadow: {glass.shadow}; --scale: {scale};">
   {#if view === 'widget'}
     <div class="head"><span aria-hidden="true">📆</span><span class="title">On this day</span></div>
     {#if !memories.loaded || memories.scanning}
@@ -92,7 +98,10 @@
   .root { box-sizing: border-box; min-height: 100vh; max-width: 520px; margin: 0 auto; padding: 16px; background: var(--page); color: var(--text); font-size: calc(16px * var(--scale)); line-height: 1.4; }
   /* the widget card is the card colour of the app, and the memory sits directly on it */
   .root.widget { min-height: 0; height: 100vh; max-width: none; padding: 12px; background: var(--card); font-size: calc(15px * var(--scale)); display: flex; flex-direction: column; }
-  .top { display: flex; align-items: center; margin-bottom: 4px; }
+  /* the plugin page fills the frame, so the glass bar sits at the top edge */
+  :global(body) { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif; -webkit-font-smoothing: antialiased; --ios-font-rounded: ui-rounded, -apple-system, system-ui, sans-serif; }
+  /* the header is a Liquid Glass bar (D-glass): it stays at the top and the content scrolls under it */
+  .top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; margin: -16px -16px 8px; padding: 16px 16px 10px; background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--glass-edge); }
   .title { display: flex; align-items: center; gap: 8px; font-weight: 600; }
   h1 { margin: 0; font-size: calc(22px * var(--scale)); font-weight: 700; }
   h2 { margin: 16px 0 6px; font-size: calc(13px * var(--scale)); font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
