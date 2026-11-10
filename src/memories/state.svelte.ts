@@ -1,3 +1,4 @@
+import { t } from '../i18n/index.svelte';
 // The state of the plugin: the memories of the day, kept in storage so the widget and the plugin share them.
 import { dayKey, datesToScan, scanYears, type Memory } from './memories';
 
@@ -43,7 +44,7 @@ class MemoriesState {
 
   // A reflection on a memory opens in the note editor, with the old note quoted
   reflect(year: number, note: string): void {
-    this.plugin.openNoteEditor(`Reflecting on ${year}:\n${note}\n`);
+    this.plugin.openNoteEditor(`${t('reflectPrompt', { year })}\n${note}\n`);
   }
 }
 

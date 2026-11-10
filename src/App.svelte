@@ -3,6 +3,7 @@
   import { memories } from './memories/state.svelte';
   import { memoryOfDay } from './memories/memories';
   import { paletteFrom, glassFrom, tintTextFrom, dangerTextFrom, type Palette, type Glass } from './palette';
+  import { t, setLanguage } from './i18n/index.svelte';
   import { onPrefsChange } from './prefs-live';
 
   let view = $state<'modal' | 'widget'>('modal');
@@ -17,6 +18,7 @@
   const applyNomieValues = (plugin: any) => {
     if (!plugin?.prefs) return;
     palette = paletteFrom(plugin.prefs);
+    setLanguage(plugin.prefs?.language);
     glass = glassFrom(plugin.prefs);
     tintText = tintTextFrom(plugin.prefs);
     dangerText = dangerTextFrom(plugin.prefs);
@@ -54,27 +56,27 @@
 
 <div class="root" class:widget={view === 'widget'} style="--page: {palette.page}; --card: {palette.card}; --card-inner: {palette.cardInner}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --danger: {dangerText}; --tint-text: {tintText}; --glass-fill: {glass.fill}; --glass-edge: {glass.edge}; --glass-blur: {glass.blur}; --glass-shadow: {glass.shadow}; --scale: {scale};">
   {#if view === 'widget'}
-    <div class="head"><span aria-hidden="true">📆</span><span class="title">On this day</span></div>
+    <div class="head"><span aria-hidden="true">📆</span><span class="title">{t('widgetTitle')}</span></div>
     {#if !memories.loaded || memories.scanning}
-      <p class="muted">Looking back…</p>
+      <p class="muted">{t('lookingBack')}</p>
     {:else if today}
       <button class="memory" onclick={() => memories.reflect(today.memory.year, today.note.note)}>
         <span class="year">{today.memory.year}</span>
         <span class="text">“{today.note.note}”</span>
       </button>
     {:else}
-      <p class="muted">No notes from this day in earlier years yet.</p>
+      <p class="muted">{t('noNotesYet')}</p>
     {/if}
   {:else}
     <header class="top">
       <div class="title"><span aria-hidden="true">📆</span><h1>Memories</h1></div>
     </header>
-    <p class="muted">What you wrote on this day in earlier years.</p>
+    <p class="muted">{t('intro')}</p>
 
     {#if !memories.loaded || memories.scanning}
-      <p class="muted">Looking back…</p>
+      <p class="muted">{t('lookingBack')}</p>
     {:else if memories.memories.length === 0}
-      <section class="card"><p class="muted">No notes from this day in earlier years yet.</p></section>
+      <section class="card"><p class="muted">{t('noNotesYet')}</p></section>
     {:else}
       {#each memories.memories as m (m.year)}
         <h2>{m.year}</h2>
@@ -82,15 +84,15 @@
           {#each m.notes as n, i (i)}
             <button class="row" onclick={() => memories.reflect(m.year, n.note)}>
               <span class="text">{n.note}</span>
-              <span class="reflect">Reflect</span>
+              <span class="reflect">{t('reflect')}</span>
             </button>
           {/each}
         </section>
       {/each}
     {/if}
 
-    {#if memories.failed}<p class="problem">The notes could not be read. Try again.</p>{/if}
-    <button class="ghost" onclick={() => memories.scan()} disabled={memories.scanning}>Look again</button>
+    {#if memories.failed}<p class="problem">{t('failed')}</p>{/if}
+    <button class="ghost" onclick={() => memories.scan()} disabled={memories.scanning}>{t('lookAgain')}</button>
   {/if}
 </div>
 

@@ -1,0 +1,10 @@
+{
+ "widgetTitle": "Heute vor Jahren",
+ "lookingBack": "Wird durchsucht …",
+ "noNotesYet": "Noch keine Notizen von diesem Tag in früheren Jahren.",
+ "intro": "Was du an diesem Tag in früheren Jahren geschrieben hast.",
+ "reflect": "Reflektieren",
+ "failed": "Die Notizen konnten nicht gelesen werden. Versuch es noch einmal.",
+ "lookAgain": "Erneut suchen",
+ "reflectPrompt": "Rückblick auf {year}:"
+}

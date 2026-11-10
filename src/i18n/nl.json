@@ -1,0 +1,10 @@
+{
+ "widgetTitle": "Op deze dag",
+ "lookingBack": "Terugkijken…",
+ "noNotesYet": "Nog geen notities van deze dag in eerdere jaren.",
+ "intro": "Wat je op deze dag in eerdere jaren schreef.",
+ "reflect": "Reflecteren",
+ "failed": "De notities konden niet worden gelezen. Probeer het opnieuw.",
+ "lookAgain": "Opnieuw zoeken",
+ "reflectPrompt": "Reflectie op {year}:"
+}

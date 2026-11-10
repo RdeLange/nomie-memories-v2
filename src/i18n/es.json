@@ -1,0 +1,10 @@
+{
+ "widgetTitle": "Este día",
+ "lookingBack": "Mirando atrás…",
+ "noNotesYet": "Aún no hay notas de este día en años anteriores.",
+ "intro": "Lo que escribiste este día en años anteriores.",
+ "reflect": "Reflexionar",
+ "failed": "No se pudieron leer las notas. Inténtalo de nuevo.",
+ "lookAgain": "Buscar de nuevo",
+ "reflectPrompt": "Reflexionando sobre {year}:"
+}
