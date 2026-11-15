@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { startSnapshots } from './snapshot';
   import { onMount } from 'svelte';
   import { memories } from './memories/state.svelte';
   import { memoryOfDay } from './memories/memories';
@@ -36,6 +37,7 @@
       addToMoreMenu: true,
       addToWidgets: true,
     });
+    startSnapshots(plugin);
     onPrefsChange(plugin, () => applyNomieValues(plugin));
     plugin.onRegistered(async () => {
       applyNomieValues(plugin);
